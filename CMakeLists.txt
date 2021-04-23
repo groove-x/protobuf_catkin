@@ -9,15 +9,12 @@ include(ExternalProject)
 file(MAKE_DIRECTORY ${CATKIN_DEVEL_PREFIX}/include)
 
 ExternalProject_Add(protobuf_src
-  URL https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.gz
+  URL https://github.com/protocolbuffers/protobuf/releases/download/v3.15.8/protobuf-all-3.15.8.tar.gz
   UPDATE_COMMAND ""
-  PATCH_COMMAND patch -p0 < ${CMAKE_SOURCE_DIR}/unused_parameter_warnings.patch &&
-                patch -p0 < ${CMAKE_SOURCE_DIR}/unused_parameter_warnings_wire_format.patch
-  CONFIGURE_COMMAND cd ../protobuf_src && ./autogen.sh && ./configure --with-pic --prefix=${CATKIN_DEVEL_PREFIX}
-  BUILD_COMMAND cd ../protobuf_src && make -j8 && cd python && python setup.py build --build-purelib build
+  CONFIGURE_COMMAND cd ../protobuf_src && ./autogen.sh && ./configure --with-pic --disable-static --prefix=${CATKIN_DEVEL_PREFIX}
+  BUILD_COMMAND cd ../protobuf_src && make -j8 && cd python && python setup.py build --cpp_implementation --build-purelib build
   INSTALL_COMMAND cd ../protobuf_src && make install -j8 &&
-                  cd python && python setup.py install --root ${CATKIN_DEVEL_PREFIX} --install-lib ${CATKIN_GLOBAL_PYTHON_DESTINATION} &&
-                  cp build/google/__init__.py ${CATKIN_DEVEL_PREFIX}/${CATKIN_GLOBAL_PYTHON_DESTINATION}/google
+                  cd python && python setup.py install --cpp_implementation --root ${CATKIN_DEVEL_PREFIX} --install-lib ${CATKIN_GLOBAL_PYTHON_DESTINATION}
 )
 
 install(DIRECTORY ${CATKIN_DEVEL_PREFIX}/include/google/protobuf
