@@ -12,9 +12,9 @@ ExternalProject_Add(protobuf_src
   URL https://github.com/protocolbuffers/protobuf/releases/download/v3.15.8/protobuf-all-3.15.8.tar.gz
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND cd ../protobuf_src && ./autogen.sh && ./configure --with-pic --disable-static --prefix=${CATKIN_DEVEL_PREFIX}
-  BUILD_COMMAND cd ../protobuf_src && make -j8 && cd python && python setup.py build --cpp_implementation --build-purelib build
+  BUILD_COMMAND cd ../protobuf_src && make -j8 && cd python && python3 setup.py build --cpp_implementation --build-purelib build
   INSTALL_COMMAND cd ../protobuf_src && make install -j8 &&
-                  cd python && python setup.py install --cpp_implementation --root ${CATKIN_DEVEL_PREFIX} --install-lib ${CATKIN_GLOBAL_PYTHON_DESTINATION}
+                  cd python && python3 setup.py install --cpp_implementation --root ${CATKIN_DEVEL_PREFIX} --install-lib ${CATKIN_GLOBAL_PYTHON_DESTINATION}
 )
 
 install(DIRECTORY ${CATKIN_DEVEL_PREFIX}/include/google/protobuf
